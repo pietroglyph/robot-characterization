@@ -35,8 +35,6 @@ import queue
 import time
 import threading
 
-from data_analyzer import analyze_data, AUTOSPEED_COL, ENCODER_P_COL
-
 import logging
 
 logger = logging.getLogger("logger")
@@ -316,8 +314,8 @@ class DataLogger:
             json.dump(stored_data, fp, indent=4, separators=(",", ": "))
 
 
-if __name__ == "__main__":
-
+def main():
+    
     log_datefmt = "%H:%M:%S"
     log_format = "%(asctime)s:%(msecs)03d %(levelname)-8s: %(name)-20s: %(message)s"
 
@@ -325,3 +323,7 @@ if __name__ == "__main__":
 
     dl = DataLogger()
     dl.run()
+
+if __name__ == "__main__":
+
+    main()

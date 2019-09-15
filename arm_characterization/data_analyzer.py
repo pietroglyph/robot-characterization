@@ -33,7 +33,7 @@ def isfloat(value):
         return False
 
 
-mainGUI = tkinter.Tk()
+mainGUI = None
 
 STATE = None
 
@@ -53,45 +53,48 @@ columns = dict(
 
 
 class ProgramState:
-    window_size = IntVar(mainGUI)
-    motion_threshold = DoubleVar(mainGUI)
-    direction = StringVar(mainGUI)
-
-    units = StringVar(mainGUI)
-
-    stored_data = None
-
-    quasi_forward = None
-    quasi_backward = None
-    step_forward = None
-    step_backward = None
-
-    ks = DoubleVar(mainGUI)
-    kv = DoubleVar(mainGUI)
-    ka = DoubleVar(mainGUI)
-    kcos = DoubleVar(mainGUI)
-    r_square = DoubleVar(mainGUI)
-
-    qp = DoubleVar(mainGUI)
-    qv = DoubleVar(mainGUI)
-    max_effort = DoubleVar(mainGUI)
-    period = DoubleVar(mainGUI)
-    max_controller_output = DoubleVar(mainGUI)
-    controller_time_normalized = BooleanVar(mainGUI)
-
-    gearing = DoubleVar(mainGUI)
-
-    controller_type = StringVar(mainGUI)
-    encoder_ppr = IntVar(mainGUI)
-    has_slave = BooleanVar(mainGUI)
-    slave_period = DoubleVar(mainGUI)
-
-    gain_units_preset = StringVar(mainGUI)
-
-    kp = DoubleVar(mainGUI)
-    kd = DoubleVar(mainGUI)
-
     def __init__(self):
+        # Set fields
+        self.window_size = IntVar(mainGUI)
+        self.motion_threshold = DoubleVar(mainGUI)
+        self.direction = StringVar(mainGUI)
+
+        self.units = StringVar(mainGUI)
+
+        self.stored_data = None
+
+        self.quasi_forward = None
+        self.quasi_backward = None
+        self.step_forward = None
+        self.step_backward = None
+
+        self.ks = DoubleVar(mainGUI)
+        self.kv = DoubleVar(mainGUI)
+        self.ka = DoubleVar(mainGUI)
+        self.kcos = DoubleVar(mainGUI)
+        self.r_square = DoubleVar(mainGUI)
+
+        self.qp = DoubleVar(mainGUI)
+        self.qv = DoubleVar(mainGUI)
+        self.max_effort = DoubleVar(mainGUI)
+        self.period = DoubleVar(mainGUI)
+        self.max_controller_output = DoubleVar(mainGUI)
+        self.controller_time_normalized = BooleanVar(mainGUI)
+
+        self.gearing = DoubleVar(mainGUI)
+
+        self.controller_type = StringVar(mainGUI)
+        self.encoder_ppr = IntVar(mainGUI)
+        self.has_slave = BooleanVar(mainGUI)
+        self.slave_period = DoubleVar(mainGUI)
+
+        self.gain_units_preset = StringVar(mainGUI)
+
+        self.kp = DoubleVar(mainGUI)
+        self.kd = DoubleVar(mainGUI)
+
+
+        # Set field defaults
         self.window_size.set(8)
         self.motion_threshold.set(20)
         self.direction.set('Combined')
@@ -911,16 +914,18 @@ def _calcGains(kv, ka, qp, qv, effort, period):
     return kp, kd
 
 
-def main():
+def main(parent):
 
-    global STATE
+    global mainGUI, STATE
+    mainGUI = parent
     STATE = ProgramState()
 
+    mainGUI.deiconify()
     mainGUI.title("RobotPy Arm Characterization Tool")
 
     configure_gui()
-    mainGUI.mainloop()
 
 
 if __name__ == "__main__":
-    main()
+    main(tkinter.Tk())
+    mainGUI.mainloop()

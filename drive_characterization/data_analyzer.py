@@ -33,60 +33,63 @@ def isfloat(value):
         return False
 
 
-mainGUI = tkinter.Tk()
+mainGUI = None
 
 STATE = None
 
 
 class ProgramState:
-    window_size = IntVar(mainGUI)
-    motion_threshold = DoubleVar(mainGUI)
-    subset = StringVar(mainGUI)
-
-    units = StringVar(mainGUI)
-    wheel_diam = DoubleVar(mainGUI)
-
-    stored_data = None
-
-    quasi_forward_l = None
-    quasi_backward_l = None
-    step_forward_l = None
-    step_backward_l = None
-
-    quasi_forward_r = None
-    quasi_backward_r = None
-    step_forward_r = None
-    step_backward_r = None
-
-    ks = DoubleVar(mainGUI)
-    kv = DoubleVar(mainGUI)
-    ka = DoubleVar(mainGUI)
-    kcos = DoubleVar(mainGUI)
-    r_square = DoubleVar(mainGUI)
-
-    wheelbase_diameter = StringVar(mainGUI)
-
-    qp = DoubleVar(mainGUI)
-    qv = DoubleVar(mainGUI)
-    max_effort = DoubleVar(mainGUI)
-    period = DoubleVar(mainGUI)
-    max_controller_output = DoubleVar(mainGUI)
-    controller_time_normalized = BooleanVar(mainGUI)
-
-    gearing = DoubleVar(mainGUI)
-    controller_type = StringVar(mainGUI)
-    encoder_ppr = IntVar(mainGUI)
-    has_slave = BooleanVar(mainGUI)
-    slave_period = DoubleVar(mainGUI)
-
-    gain_units_preset = StringVar(mainGUI)
-
-    loop_type = StringVar(mainGUI)
-
-    kp = DoubleVar(mainGUI)
-    kd = DoubleVar(mainGUI)
-
     def __init__(self):
+        # Set fields
+        self.window_size = IntVar(mainGUI)
+        self.motion_threshold = DoubleVar(mainGUI)
+        self.subset = StringVar(mainGUI)
+
+        self.units = StringVar(mainGUI)
+        self.wheel_diam = DoubleVar(mainGUI)
+
+        self.stored_data = None
+
+        self.quasi_forward_l = None
+        self.quasi_backward_l = None
+        self.step_forward_l = None
+        self.step_backward_l = None
+
+        self.quasi_forward_r = None
+        self.quasi_backward_r = None
+        self.step_forward_r = None
+        self.step_backward_r = None
+
+        self.ks = DoubleVar(mainGUI)
+        self.kv = DoubleVar(mainGUI)
+        self.ka = DoubleVar(mainGUI)
+        self.kcos = DoubleVar(mainGUI)
+        self.r_square = DoubleVar(mainGUI)
+
+        self.wheelbase_diameter = StringVar(mainGUI)
+
+        self.qp = DoubleVar(mainGUI)
+        self.qv = DoubleVar(mainGUI)
+        self.max_effort = DoubleVar(mainGUI)
+        self.period = DoubleVar(mainGUI)
+        self.max_controller_output = DoubleVar(mainGUI)
+        self.controller_time_normalized = BooleanVar(mainGUI)
+
+        self.gearing = DoubleVar(mainGUI)
+        self.controller_type = StringVar(mainGUI)
+        self.encoder_ppr = IntVar(mainGUI)
+        self.has_slave = BooleanVar(mainGUI)
+        self.slave_period = DoubleVar(mainGUI)
+
+        self.gain_units_preset = StringVar(mainGUI)
+
+        self.loop_type = StringVar(mainGUI)
+
+        self.kp = DoubleVar(mainGUI)
+        self.kd = DoubleVar(mainGUI)
+
+
+        # Setup field defaults
         self.window_size.set(8)
         self.motion_threshold.set(.2)
         self.subset.set('All Combined')
@@ -1084,16 +1087,19 @@ def _calcGainsVel(kv, ka, qv, effort, period):
     return kp, kd
 
 
-def main():
+def main(parent):
 
-    global STATE
+    global mainGUI, STATE
+    mainGUI = parent
     STATE = ProgramState()
 
+    mainGUI.deiconify()
     mainGUI.title("RobotPy Drive Characterization Tool")
 
     configure_gui()
-    mainGUI.mainloop()
+    
 
 
 if __name__ == "__main__":
-    main()
+    main(tkinter.Tk())
+    mainGUI.mainloop()
