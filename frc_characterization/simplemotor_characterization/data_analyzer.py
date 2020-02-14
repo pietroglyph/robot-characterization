@@ -253,6 +253,10 @@ def configure_gui(STATE):
             kd = kd * rotation / (STATE.encoder_epr.get() * STATE.gearing.get())
             if STATE.loop_type.get() == "Velocity":
                 kp = kp * 10
+        elif STATE.controller_type.get() == "Spark":
+            # SPARK MAX PID controller units are in RPM unless you set the conversion factor
+            kp /= 60.0
+            kd /= 60.0
 
         STATE.kp.set(float("%.3g" % kp))
         STATE.kd.set(float("%.3g" % kd))
